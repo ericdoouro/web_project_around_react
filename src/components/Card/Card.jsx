@@ -10,8 +10,8 @@ function Card({ card, onCardLike, onCardDelete, onCardClick }) {
   const isLiked = likes.some((i) => i._id === currentUser?._id);
   const isOwn = card.owner?._id === currentUser?._id;
 
-  const cardLikeButtonClassName = `card__like-button ${
-    isLiked ? "card__like-button_active" : ""
+  const cardLikeButtonClassName = `element__like-img ${
+    isLiked ? "element__button_active" : ""
   }`;
 
   function handleLikeClick() {
@@ -27,23 +27,32 @@ function Card({ card, onCardLike, onCardDelete, onCardClick }) {
   }
 
   return (
-      <li class="card">
-        <div class="element__item">
-            <button class="element__delete-button">
-                <img class="element__delete-button-img" src="./images/delete.svg" alt="Delete" />
+      <li className="elements">
+        <div className="element__item">
+
+            <button className="element__delete-button">
+                <img 
+                  className="element__delete-button-img" 
+                  src="./images/delete.svg" 
+                  alt="Delete" />
             </button>
-
-      <img
-        src={card.link}
-        alt={card.name}
-        className="element__item-img"
-        onClick={handleCardClick}
-      />
-
+          
+            <img
+              src={card.link}
+              alt={card.name}
+              className="element__item-img"
+              onClick={handleCardClick}
+            />
+          
         <div className="element__item-info">
             <h2 className="element__item-info-text">{card.name}</h2>
-              <button className="element__button">
-                  <img className="element__like-img" src="./images/like.svg" alt="Like" />
+              <button className="element__button"
+                onClick={handleLikeClick}
+              >
+                  <img 
+                    className="element__like-img" 
+                    src="./images/like.svg" 
+                    alt="Like" />
               </button>
 
         </div>

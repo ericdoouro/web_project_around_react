@@ -64,7 +64,8 @@ function Main() {
   }
 
 function handleCardLike(card) {
-  const isLiked = card.likes.some((i) => i._id === currentUser._id);
+  console.log("cliquei no like", card);
+  const isLiked = (card.likes || []).some((i) => i._id === currentUser._id);
 
   const request = isLiked
     ? api.unlikeCard(card._id)

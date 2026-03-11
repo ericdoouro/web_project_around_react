@@ -12,6 +12,7 @@ export default function Popup(props) {
           <h3 className="popup__title">{title}</h3>
           {children}
         </div>
+
     );
   }
   
