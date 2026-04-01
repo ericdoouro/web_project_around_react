@@ -6,23 +6,18 @@ function EditAvatar({ onSubmit }) {
   function handleSubmit(e) {
     e.preventDefault();
     onSubmit({ avatar });
-    setAvatar("");
   }
 
   return (
-    <>
+    <form onSubmit={handleSubmit}>
       <input
         type="url"
-        className="popup__input"
         placeholder="Link do avatar"
         value={avatar}
         onChange={(e) => setAvatar(e.target.value)}
       />
-
-      <button className="popup__save-button" onClick={handleSubmit}>
-        Salvar
-      </button>
-    </>
+      <button type="submit">Salvar</button>
+    </form>
   );
 }
 

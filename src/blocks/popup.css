@@ -10,7 +10,7 @@
 }
 
 /* Quando a classe .popup_opened for adicionada, mostra o popup */
-.popup.popup_opened {
+.popup .popup_opened {
   display: flex;
 }
 

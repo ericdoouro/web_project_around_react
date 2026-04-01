@@ -1,117 +1,162 @@
-import { useEffect, useState } from "react";
-import api from "../../utils/api.js";
+import { useState } from "react";
 
 import Card from "../Card/Card";
-import PopupWithForm from "../PopupWithForm/PopupWithForm";
+import Popup from "../Popup/Popup";
 import NewCard from "../NewCard/NewCard";
 import EditProfile from "../EditProfile/EditProfile";
 import EditAvatar from "../EditAvatar/EditAvatar";
 import ImagePopup from "../ImagePopup/ImagePopup";
 
-function Main() {
-  const [cards, setCards] = useState([]);
-  const [currentUser, setCurrentUser] = useState({});
+// ✅ MOCK
+const initialCards = [
+  {
+    _id: "1",
+    name: "Yosemite Valley",
+    link: "https://practicum-content.s3.us-west-1.amazonaws.com/web-code/moved_yosemite.jpg",
+    isLiked: false,
+  },
+  {
+    _id: "2",
+    name: "Lake Louise",
+    link: "https://practicum-content.s3.us-west-1.amazonaws.com/web-code/moved_lake-louise.jpg",
+    isLiked: false,
+  },
+];
 
-  const [isEditProfileOpen, setIsEditProfileOpen] = useState(false);
-  const [isAddCardOpen, setIsAddCardOpen] = useState(false);
-  const [isEditAvatarOpen, setIsEditAvatarOpen] = useState(false);
+function Main() {
+  // STATES
+  const [cards, setCards] = useState(initialCards);
+  const [popup, setPopup] = useState(null);
   const [selectedCard, setSelectedCard] = useState(null);
 
-  // carregar dados iniciais
-  useEffect(() => {
-    Promise.all([api.getUserInfo(), api.getInitialCards()])
-      .then(([userData, cardsData]) => {
-        setCurrentUser(userData);
-        setCards(cardsData);
-      })
-      .catch(console.error);
-  }, []);
+  const [currentUser, setCurrentUser] = useState({
+    name: "Jacques Cousteau",
+    about: "Explorer",
+    avatar: "/images/avatar.jpg",
+  });
 
-  function closeAllPopups() {
-    setIsEditProfileOpen(false);
-    setIsAddCardOpen(false);
-    setIsEditAvatarOpen(false);
-    setSelectedCard(null);
+  // ===== HANDLERS =====
+
+  function handleOpenPopup(popupData) {
+    setPopup(popupData);
   }
 
-  // ===== Handlers =====
-
-  function handleAddCard(cardData) {
-    api.addNewCard(cardData)
-      .then((newCard) => {
-        setCards((prev) => [newCard, ...prev]);
-        closeAllPopups();
-      })
-      .catch(console.error);
+  function handleClosePopup() {
+    setPopup(null);
   }
 
-  function handleUpdateProfile(data) {
-    api.editUserInfo({ name: data.name, about: data.job })
-      .then((user) => {
-        setCurrentUser(user);
-        closeAllPopups();
-      })
-      .catch(console.error);
+  function handleCardClick(card) {
+    setSelectedCard(card);
   }
 
-  function handleUpdateAvatar(data) {
-    api.updateAvatar(data.avatar)
-      .then((user) => {
-        setCurrentUser(user);
-        closeAllPopups();
-      })
-      .catch(console.error);
+  function handleCardDelete(card) {
+    const updatedCards = cards.filter((c) => c._id !== card._id);
+    setCards(updatedCards);
   }
 
-function handleCardLike(card) {
-  console.log("cliquei no like", card);
-  const isLiked = (card.likes || []).some((i) => i._id === currentUser._id);
+  function handleCardLike(card) {
+    const updatedCards = cards.map((c) => {
+      if (c._id === card._id) {
+        return {
+          ...c,
+          isLiked: !c.isLiked,
+        };
+      }
+      return c;
+    });
 
-  const request = isLiked
-    ? api.unlikeCard(card._id)
-    : api.likeCard(card._id);
+    setCards(updatedCards);
+  }
 
-  request
-    .then((newCard) => {
-      setCards((state) =>
-        state.map((c) => (c._id === card._id ? newCard : c))
-      );
-    })
-    .catch(console.error);
-}
+  function handleUpdateProfile({ name, about }) {
+    setCurrentUser((prev) => ({
+      ...prev,
+      name,
+      about,
+    }));
+    handleClosePopup();
+  }
 
-function handleCardDelete(card) {
-  api.deleteCard(card._id)
-    .then(() => {
-      setCards((state) => state.filter((c) => c._id !== card._id));
-    })
-    .catch(console.error);
-}
+  function handleUpdateAvatar({ avatar }) {
+    setCurrentUser((prev) => ({
+      ...prev,
+      avatar,
+    }));
+    handleClosePopup();
+  }
+
+  function handleAddCard({ name, link }) {
+    const newCard = {
+      _id: Date.now().toString(),
+      name,
+      link,
+      isLiked: false,
+    };
+
+    setCards([newCard, ...cards]);
+    handleClosePopup();
+  }
+
+  // ===== POPUPS =====
+
+  const editProfilePopup = {
+    title: "Editar Perfil",
+    children: (
+      <EditProfile
+        onSubmit={handleUpdateProfile}
+        currentUser={currentUser}
+      />
+    ),
+  };
+
+  const editAvatarPopup = {
+    title: "Editar Avatar",
+    children: <EditAvatar onSubmit={handleUpdateAvatar} />,
+  };
+
+  const addCardPopup = {
+    title: "Novo Card",
+    children: <NewCard onSubmit={handleAddCard} />,
+  };
 
   return (
     <main className="content">
-
+      
       {/* PROFILE */}
       <section className="profile">
         <div className="profile__avatar-container">
-          <button className="profile__avatar-edit" onClick={() => setIsEditAvatarOpen(true)}>
+          <button
+            className="profile__avatar-edit"
+            onClick={() => handleOpenPopup(editAvatarPopup)}
+          >
             <img src="/images/edit.png" alt="Edit" />
           </button>
 
-          <img className="profile__avatar" src={currentUser.avatar} alt="Perfil" />
+          <img
+            className="profile__avatar"
+            src={currentUser.avatar}
+            alt="Perfil"
+          />
         </div>
 
         <div className="profile__info">
           <div className="profile__info-text">
             <h2 className="profile__info-name">{currentUser.name}</h2>
-            <button className="popup__edit-profile-button" onClick={() => setIsEditProfileOpen(true)}>
+            <button
+              className="popup__edit-profile-button"
+              onClick={() => handleOpenPopup(editProfilePopup)}
+            >
               <img src="/images/edit.png" alt="Edit" />
             </button>
           </div>
+
           <p className="profile__info-profession">{currentUser.about}</p>
         </div>
 
-        <button className="profile__add" onClick={() => setIsAddCardOpen(true)}>
+        <button
+          className="profile__add"
+          onClick={() => handleOpenPopup(addCardPopup)}
+        >
           <img src="/images/add.png" alt="Add" />
         </button>
       </section>
@@ -123,7 +168,7 @@ function handleCardDelete(card) {
             <Card
               key={card._id}
               card={card}
-              onCardClick={setSelectedCard}
+              onCardClick={handleCardClick}
               onCardLike={handleCardLike}
               onCardDelete={handleCardDelete}
             />
@@ -131,20 +176,20 @@ function handleCardDelete(card) {
         </ul>
       </section>
 
-      {/* POPUPS */}
-      <PopupWithForm title="Editar Perfil" isOpen={isEditProfileOpen} onClose={closeAllPopups}>
-        <EditProfile onSubmit={handleUpdateProfile} />
-      </PopupWithForm>
+      {/* POPUP PADRÃO */}
+      {popup && (
+        <Popup title={popup.title} onClose={handleClosePopup}>
+          {popup.children}
+        </Popup>
+      )}
 
-      <PopupWithForm title="Novo Card" isOpen={isAddCardOpen} onClose={closeAllPopups}>
-        <NewCard onAddCard={handleAddCard} />
-      </PopupWithForm>
-
-      <PopupWithForm title="Editar Avatar" isOpen={isEditAvatarOpen} onClose={closeAllPopups}>
-        <EditAvatar onSubmit={handleUpdateAvatar} />
-      </PopupWithForm>
-
-      <ImagePopup card={selectedCard} isOpen={!!selectedCard} onClose={closeAllPopups} />
+      {/* POPUP DE IMAGEM */}
+      {selectedCard && (
+        <ImagePopup
+          card={selectedCard}
+          onClose={() => setSelectedCard(null)}
+        />
+      )}
     </main>
   );
 }

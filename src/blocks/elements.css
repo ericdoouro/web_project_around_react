@@ -62,8 +62,7 @@
   }
 
   .element__button_active .element__like-img {
-    background-image: url('../images/like2.png');
-    background-color: blueviolet;
+    background-image: url('/public/images/like2.png');
   }
   
   .element__delete-button {

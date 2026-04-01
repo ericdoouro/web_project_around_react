@@ -1,23 +1,31 @@
 import { useState } from "react";
 
-function EditProfile({ onSubmit }) {
-  const [name, setName] = useState("");
-  const [job, setJob] = useState("");
+function EditProfile({ onSubmit, currentUser }) {
+  const [name, setName] = useState(currentUser.name);
+  const [about, setAbout] = useState(currentUser.about);
 
   function handleSubmit(e) {
     e.preventDefault();
-    onSubmit({ name, job });
+    onSubmit({ name, about });
   }
 
   return (
-    <>
-      <input className="popup__input" placeholder="Nome" value={name} onChange={(e) => setName(e.target.value)} />
-      <input className="popup__input" placeholder="Profissão" value={job} onChange={(e) => setJob(e.target.value)} />
+    <form className="popup__form" onSubmit={handleSubmit}>
+      <input
+        type="text"
+        value={name}
+        onChange={(e) => setName(e.target.value)}
+        placeholder="Nome"
+      />
+      <input
+        type="text"
+        value={about}
+        onChange={(e) => setAbout(e.target.value)}
+        placeholder="Profissão"
+      />
 
-      <button className="popup__save-button" onClick={handleSubmit}>
-        Salvar
-      </button>
-    </>
+      <button type="submit">Salvar</button>
+    </form>
   );
 }
 
