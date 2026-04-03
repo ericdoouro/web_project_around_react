@@ -10,7 +10,7 @@
 }
 
 /* Quando a classe .popup_opened for adicionada, mostra o popup */
-.popup .popup_opened {
+.popup_opened {
   display: flex;
 }
 
@@ -53,13 +53,12 @@
 }
 
 .popup__container-image {
+  position: relative;
   display: flex;
   flex-direction: column;
   background: transparent;
   max-width: 75vw;
   max-height: 75vh;
-  width: auto;
-  height: auto;
   padding: 0;
 }
 

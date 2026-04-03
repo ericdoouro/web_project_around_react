@@ -6,6 +6,7 @@ import NewCard from "../NewCard/NewCard";
 import EditProfile from "../EditProfile/EditProfile";
 import EditAvatar from "../EditAvatar/EditAvatar";
 import ImagePopup from "../ImagePopup/ImagePopup";
+import RemoveCard from "../RemoveCard/RemoveCard";
 
 // ✅ MOCK
 const initialCards = [
@@ -28,6 +29,8 @@ function Main() {
   const [cards, setCards] = useState(initialCards);
   const [popup, setPopup] = useState(null);
   const [selectedCard, setSelectedCard] = useState(null);
+  const [cardToDelete, setCardToDelete] = useState(null);
+  
 
   const [currentUser, setCurrentUser] = useState({
     name: "Jacques Cousteau",
@@ -50,9 +53,9 @@ function Main() {
   }
 
   function handleCardDelete(card) {
-    const updatedCards = cards.filter((c) => c._id !== card._id);
-    setCards(updatedCards);
-  }
+    console.log("Cliquei Aqui",card)
+    setCardToDelete(card);
+}
 
   function handleCardLike(card) {
     const updatedCards = cards.map((c) => {
@@ -96,6 +99,15 @@ function Main() {
     setCards([newCard, ...cards]);
     handleClosePopup();
   }
+
+  function handleConfirmDelete() {
+  const updatedCards = cards.filter(
+    (c) => c._id !== cardToDelete._id
+  );
+
+  setCards(updatedCards);
+  setCardToDelete(null);
+}
 
   // ===== POPUPS =====
 
@@ -189,6 +201,19 @@ function Main() {
           card={selectedCard}
           onClose={() => setSelectedCard(null)}
         />
+      )}
+
+      {cardToDelete && (
+        <Popup title="Tem certeza?" 
+          onClose={handleClosePopup}>
+        
+        <RemoveCard
+          onSubmit={(evt)=> {
+            evt.preventDefault()
+            handleConfirmDelete()
+          }}
+        /> 
+        </Popup>
       )}
     </main>
   );

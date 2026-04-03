@@ -1,11 +1,10 @@
 function Popup({ title, children, onClose }) {
-  if (!Popup) return true;
   
   return (
     <div className="popup popup_opened">
       <div
-        className={`popup__content ${
-          !title ? "popup__content_content_image" : ""
+        className={`popup__container ${
+          !title ? "popup__container-image" : ""
         }`}
       >
         <button

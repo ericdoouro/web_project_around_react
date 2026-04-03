@@ -9,14 +9,21 @@ function EditAvatar({ onSubmit }) {
   }
 
   return (
-    <form onSubmit={handleSubmit}>
-      <input
-        type="url"
-        placeholder="Link do avatar"
-        value={avatar}
-        onChange={(e) => setAvatar(e.target.value)}
-      />
-      <button type="submit">Salvar</button>
+    <form 
+      className="form__fields"
+      onSubmit={handleSubmit}>
+
+        <input
+          className="form__fields-input"
+          type="url"
+          placeholder="Link do avatar"
+          value={avatar}
+          onChange={(e) => setAvatar(e.target.value)}
+        />
+        <button 
+          className="form__submit" 
+          type="submit">Salvar
+        </button>
     </form>
   );
 }

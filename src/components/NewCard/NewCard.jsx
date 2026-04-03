@@ -10,20 +10,24 @@ function NewCard({ onSubmit }) {
   }
 
   return (
-    <form onSubmit={handleSubmit}>
+    <form className="popup__form" onSubmit={handleSubmit}>
       <input
+        className="popup__input"
         type="text"
         placeholder="Título"
         value={name}
         onChange={(e) => setName(e.target.value)}
       />
       <input
+        className="popup__input"
         type="url"
         placeholder="Link da imagem"
         value={link}
         onChange={(e) => setLink(e.target.value)}
       />
-      <button type="submit">Criar</button>
+      <button 
+        className="popup__save-button"
+        type="submit">Criar</button>
     </form>
   );
 }
