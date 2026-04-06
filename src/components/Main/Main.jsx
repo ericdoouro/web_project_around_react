@@ -59,7 +59,7 @@ function Main() {
   const [currentUser, setCurrentUser] = useState({
     name: "Jacques Cousteau",
     about: "Explorer",
-    avatar: "/images/avatar.jpg",
+    avatar: "./images/image_perfil.jpg",
   });
 
   // ===== HANDLERS =====
