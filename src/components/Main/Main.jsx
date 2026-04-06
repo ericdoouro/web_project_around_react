@@ -12,16 +12,40 @@ import RemoveCard from "../RemoveCard/RemoveCard";
 const initialCards = [
   {
     _id: "1",
-    name: "Yosemite Valley",
+    name: "Vale de Yosemite",
     link: "https://practicum-content.s3.us-west-1.amazonaws.com/web-code/moved_yosemite.jpg",
     isLiked: false,
   },
   {
     _id: "2",
-    name: "Lake Louise",
+    name: "Lago Louise",
     link: "https://practicum-content.s3.us-west-1.amazonaws.com/web-code/moved_lake-louise.jpg",
     isLiked: false,
-  },
+    },
+    {
+    _id: "3",
+      name: "Montanhas Carecas",
+      link: "https://practicum-content.s3.us-west-1.amazonaws.com/web-code/moved_bald-mountains.jpg",
+      isLiked: false,
+    },
+    {
+    _id: "4",
+      name: "Latemar",
+      link: "https://practicum-content.s3.us-west-1.amazonaws.com/web-code/moved_latemar.jpg",
+      isLiked: false,
+    },
+    {
+    _id: "5",
+      name: "Parque Nacional da Vanoise",
+      link: "https://practicum-content.s3.us-west-1.amazonaws.com/web-code/moved_vanoise.jpg",
+      isLiked: false,
+    },
+    {
+    _id: "6",
+      name: "Lago di Braies",
+      link: "https://practicum-content.s3.us-west-1.amazonaws.com/web-code/moved_lago.jpg",
+      isLiked: false,
+    },
 ];
 
 function Main() {
@@ -53,7 +77,6 @@ function Main() {
   }
 
   function handleCardDelete(card) {
-    console.log("Cliquei Aqui",card)
     setCardToDelete(card);
 }
 
@@ -190,7 +213,9 @@ function Main() {
 
       {/* POPUP PADRÃO */}
       {popup && (
-        <Popup title={popup.title} onClose={handleClosePopup}>
+        <Popup 
+          title={popup.title} 
+          onClose={handleClosePopup}>
           {popup.children}
         </Popup>
       )}
@@ -204,15 +229,15 @@ function Main() {
       )}
 
       {cardToDelete && (
-        <Popup title="Tem certeza?" 
-          onClose={handleClosePopup}>
+        <Popup 
+          title="Tem certeza?" onClose={() => setCardToDelete(null)}>
         
-        <RemoveCard
-          onSubmit={(evt)=> {
-            evt.preventDefault()
-            handleConfirmDelete()
-          }}
-        /> 
+          <RemoveCard
+            onSubmit={(evt)=> {
+              evt.preventDefault()
+              handleConfirmDelete()
+            }}
+          /> 
         </Popup>
       )}
     </main>

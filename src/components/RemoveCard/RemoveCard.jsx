@@ -6,8 +6,8 @@ function RemoveCard({ onSubmit, }) {
           onSubmit={onSubmit}>
 
           <button 
-            type="submit" 
-            className="popup__save-button">
+            className="popup__save-button"
+            type="submit">
               Sim
           </button>
         </form>
