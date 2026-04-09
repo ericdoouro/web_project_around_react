@@ -1,5 +1,5 @@
 function ImagePopup({ card, onClose }) {
-  if (!card) return true;
+  if (!card) return null;
 
   return (
     <div className="popup popup_opened">

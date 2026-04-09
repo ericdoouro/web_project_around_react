@@ -1,12 +1,21 @@
 import { useState } from "react";
+import { useContext } from "react";
+import CurrentUserContext from "../../contexts/CurrentUserContext";
 
-function EditProfile({ onSubmit, currentUser }) {
+function EditProfile({ onSubmit, }) {
+  const { currentUser, updateUser } = useContext(CurrentUserContext);
   const [name, setName] = useState(currentUser.name);
   const [about, setAbout] = useState(currentUser.about);
 
   function handleSubmit(e) {
+    console.log("Salvar", currentUser)
     e.preventDefault();
-    onSubmit({ name, about });
+    // onSubmit({ name, about });
+    updateUser({
+      ...currentUser,
+    "name": name,
+    "about": about,
+})
   }
 
   return (

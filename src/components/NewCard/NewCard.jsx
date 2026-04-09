@@ -1,5 +1,8 @@
 import { useState } from "react";
 
+import { useContext } from "react";
+import CurrentUserContext from "../../contexts/CurrentUserContext";
+
 function NewCard({ onSubmit }) {
   const [name, setName] = useState("");
   const [link, setLink] = useState("");
@@ -9,6 +12,7 @@ function NewCard({ onSubmit }) {
     onSubmit({ name, link });
   }
 
+  const { currentUser } = useContext(CurrentUserContext);
   return (
     <form className="popup__form" onSubmit={handleSubmit}>
       <input

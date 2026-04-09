@@ -1,7 +1,10 @@
+import { useContext } from "react";
+import CurrentUserContext from "../../contexts/CurrentUserContext";
+
 function Card({ card, onCardLike, onCardDelete, onCardClick }) {
   const { name, link, isLiked } = card;
 
-
+  const { currentUser } = useContext(CurrentUserContext);
   return (
     <li className="element__item">
       

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 
 import Card from "../Card/Card";
 import Popup from "../Popup/Popup";
@@ -7,6 +7,7 @@ import EditProfile from "../EditProfile/EditProfile";
 import EditAvatar from "../EditAvatar/EditAvatar";
 import ImagePopup from "../ImagePopup/ImagePopup";
 import RemoveCard from "../RemoveCard/RemoveCard";
+import CurrentUserContext from "../../contexts/CurrentUserContext";
 
 // ✅ MOCK
 const initialCards = [
@@ -56,11 +57,13 @@ function Main() {
   const [cardToDelete, setCardToDelete] = useState(null);
   
 
-  const [currentUser, setCurrentUser] = useState({
-    name: "Jacques Cousteau",
-    about: "Explorer",
-    avatar: "./images/image_perfil.jpg",
-  });
+  // const [currentUser, setCurrentUser] = useState({
+  //   name: "Eric do Ouro",
+  //   about: "Explorer",
+  //   avatar: "./images/image_perfil.jpg",
+  // });
+
+  const { currentUser, setCurrentUser } = useContext(CurrentUserContext);
 
   // ===== HANDLERS =====
 

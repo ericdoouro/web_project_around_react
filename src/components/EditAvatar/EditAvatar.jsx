@@ -1,12 +1,21 @@
 import { useState } from "react";
+import { useContext } from "react";
+import CurrentUserContext from "../../contexts/CurrentUserContext";
 
 function EditAvatar({ onSubmit }) {
   const [avatar, setAvatar] = useState("");
 
+const { updateUser, currentUser } = useContext(CurrentUserContext);
   function handleSubmit(e) {
     e.preventDefault();
-    onSubmit({ avatar });
+    console.log("Função")
+    updateUser({
+      ...currentUser,
+    avatar: avatar
+})
   }
+
+  
 
   return (
     <form 

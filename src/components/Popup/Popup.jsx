@@ -1,5 +1,11 @@
+import { useContext } from "react";
+import CurrentUserContext from "../../contexts/CurrentUserContext";
+
+
+
 function Popup({ title, children, onClose }) {
   
+  const { currentUser } = useContext(CurrentUserContext);
   return (
     <div className="popup popup_opened">
       <div
