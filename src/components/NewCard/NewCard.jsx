@@ -1,37 +1,117 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
-import { useContext } from "react";
-import CurrentUserContext from "../../contexts/CurrentUserContext";
-
-function NewCard({ onSubmit }) {
+function NewCard({ onSubmit, onClose }) {
   const [name, setName] = useState("");
   const [link, setLink] = useState("");
 
+  const [errors, setErrors] = useState({
+    name: "",
+    link: "",
+  });
+
+  const [touched, setTouched] = useState({
+      name: false,
+      link: false,
+    })
+
+  const [isValid, setIsValid] = useState(false);
+
+  // 🔥 VALIDAÇÃO
+  useEffect(() => {
+    const newErrors = {
+      name: "",
+      link: "",
+    };
+
+    // nome
+    if (name.trim().length < 2) {
+      newErrors.name = "Preencha esse campo.";
+    }
+
+    // link
+    if (!link) {
+      newErrors.link = "Link é obrigatório";
+    } else {
+      try {
+        new URL(link);
+      } catch {
+        newErrors.link = "Digite uma URL válida";
+      }
+    }
+
+    setErrors(newErrors);
+
+    const formIsValid =
+      !newErrors.name &&
+      !newErrors.link &&
+      name &&
+      link;
+
+    setIsValid(formIsValid);
+  }, [name, link]);
+
   function handleSubmit(e) {
     e.preventDefault();
+
+    if (!isValid) return;
+
     onSubmit({ name, link });
+
+    // limpa depois de salvar
+    setName("");
+    setLink("");
+
+    onClose();
   }
 
-  const { currentUser } = useContext(CurrentUserContext);
   return (
     <form className="popup__form" onSubmit={handleSubmit}>
+      
+      {/* TITLE */}
       <input
-        className="popup__input"
+        className={`popup__input ${
+          errors.name ? "popup__input_type_error" : ""
+        }`}
         type="text"
         placeholder="Título"
         value={name}
-        onChange={(e) => setName(e.target.value)}
+        onChange={(e) => {
+          setName(e.target.value);
+          setTouched({ ...touched, name: true });
+        }}
       />
+
+      {touched.name && errors.name && (
+        <p className="popup__error">{errors.name}</p>
+      )}
+
+      {/* LINK */}
       <input
-        className="popup__input"
+        className={`popup__input ${
+          errors.link ? "popup__input_type_error" : ""
+        }`}
         type="url"
         placeholder="Link da imagem"
         value={link}
-        onChange={(e) => setLink(e.target.value)}
+        onChange={(e) => {
+          setLink(e.target.value);
+          setTouched({ ...touched, link: true });
+        }}
       />
-      <button 
-        className="popup__save-button"
-        type="submit">Criar</button>
+
+      {touched.link && errors.link && (
+        <p className="popup__error ">{errors.link}</p>
+      )}
+
+      <button
+        className={`popup__save-button ${
+          !isValid ? "popup__save-button_disabled" : ""
+        }`}
+        type="submit"
+        disabled={!isValid}
+      >
+        Criar
+      </button>
     </form>
   );
 }
