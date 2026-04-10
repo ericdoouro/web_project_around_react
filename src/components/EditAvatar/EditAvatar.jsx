@@ -9,13 +9,12 @@ const { updateUser, currentUser } = useContext(CurrentUserContext);
   function handleSubmit(e) {
     e.preventDefault();
     console.log("Função")
-    updateUser({
-      ...currentUser,
-    avatar: avatar
-})
+//     updateUser({
+//       ...currentUser,
+//     avatar: avatar
+// })
+  onSubmit({...currentUser, avatar})
   }
-
-  
 
   return (
     <form 

@@ -63,7 +63,7 @@ function Main() {
   //   avatar: "./images/image_perfil.jpg",
   // });
 
-  const { currentUser, setCurrentUser } = useContext(CurrentUserContext);
+  const { currentUser, updateUser } = useContext(CurrentUserContext);
 
   // ===== HANDLERS =====
 
@@ -98,7 +98,10 @@ function Main() {
   }
 
   function handleUpdateProfile({ name, about }) {
-    setCurrentUser((prev) => ({
+    console.log("Main")
+    console.log(name )
+    console.log(about )
+    updateUser((prev) => ({
       ...prev,
       name,
       about,
@@ -107,7 +110,8 @@ function Main() {
   }
 
   function handleUpdateAvatar({ avatar }) {
-    setCurrentUser((prev) => ({
+    console.log("Edit Avatar")
+    updateUser((prev) => ({
       ...prev,
       avatar,
     }));

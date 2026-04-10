@@ -14,10 +14,8 @@ function App() {
   });
   
   function updateUser(data) {
-    setCurrentUser((prevUser) => ({
-    ...prevUser,
-    ...data,
-    }));
+    console.log(data)
+    setCurrentUser(data) 
   }
 
   return (
