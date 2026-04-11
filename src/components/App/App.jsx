@@ -8,8 +8,8 @@ import CurrentUserContext from "../../contexts/CurrentUserContext";
 
 function App() {
   const [currentUser, setCurrentUser] = useState({
-    name: "Jacques Cousteau",
-    about: "Explorer",
+    name: "Nome",
+    about: "Profissão",
     avatar: "/images/image_perfil.jpg",
   });
   

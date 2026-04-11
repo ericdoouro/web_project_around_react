@@ -70,7 +70,7 @@ function NewCard({ onSubmit, onClose }) {
       {/* TITLE */}
       <input
         className={`popup__input ${
-          errors.name ? "popup__input_type_error" : ""
+          errors.name.length ? "popup__input_type_error" : ""
         }`}
         type="text"
         placeholder="Título"
@@ -88,7 +88,7 @@ function NewCard({ onSubmit, onClose }) {
       {/* LINK */}
       <input
         className={`popup__input ${
-          errors.link ? "popup__input_type_error" : ""
+          errors.link.length ? "popup__input_type_error" : ""
         }`}
         type="url"
         placeholder="Link da imagem"
