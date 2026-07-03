@@ -1,10 +1,12 @@
-import { useState } from "react";
+import React, { useState, useEffect } from "react";
 
 import Header from "../Header/Header";
 import Main from "../Main/Main";
 import Footer from "../Footer/Footer";
 
 import CurrentUserContext from "../../contexts/CurrentUserContext";
+
+import api from "../utils/api";
 
 function App() {
   const [currentUser, setCurrentUser] = useState({
@@ -13,18 +15,29 @@ function App() {
     avatar: "/images/image_perfil.jpg",
   });
   
-  function updateUser(data) {
-    console.log(data)
-    setCurrentUser(data) 
-  }
+  // function updateUser(data) {
+    // console.log(data)
+    // setCurrentUser(data) 
+  // }
+
+  useEffect(() => {
+    api.getUserInfo()
+     .then((user) => {
+        setCurrentUser(user);
+     })
+     .catch((err) => {
+      console.error(err);
+     });
+  }, []);
 
   return (
-    <CurrentUserContext.Provider value={{ currentUser, updateUser }}>
-      <div className="page">
-        <Header />
-        <Main />
-        <Footer />
-      </div>
+    <CurrentUserContext.Provider 
+      value={currentUser}>
+        <div className="page">
+          <Header />
+          <Main />
+          <Footer />
+        </div>
     </CurrentUserContext.Provider>
   );
 }
