@@ -7,6 +7,7 @@ import EditProfile from "../EditProfile/EditProfile";
 import EditAvatar from "../EditAvatar/EditAvatar";
 import ImagePopup from "../ImagePopup/ImagePopup";
 import RemoveCard from "../RemoveCard/RemoveCard";
+
 import CurrentUserContext from "../../contexts/CurrentUserContext";
 
 // ✅ MOCK
@@ -63,7 +64,7 @@ function Main() {
   //   avatar: "./images/image_perfil.jpg",
   // });
 
-  const { currentUser, updateUser } = useContext(CurrentUserContext);
+  const currentUser = useContext(CurrentUserContext);
 
   // ===== HANDLERS =====
 
@@ -86,11 +87,7 @@ function Main() {
   function handleCardLike(card) {
     const updatedCards = cards.map((c) => {
       if (c._id === card._id) {
-        return {
-          ...c,
-          isLiked: !c.isLiked,
-        };
-      }
+    }
       return c;
     });
 
