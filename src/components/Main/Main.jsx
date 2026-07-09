@@ -1,4 +1,4 @@
-import { useContext, useState } from "react";
+import { useContext, useState, useEffect } from "react";
 
 import Card from "../Card/Card";
 import Popup from "../Popup/Popup";
@@ -7,55 +7,28 @@ import EditProfile from "../EditProfile/EditProfile";
 import EditAvatar from "../EditAvatar/EditAvatar";
 import ImagePopup from "../ImagePopup/ImagePopup";
 import RemoveCard from "../RemoveCard/RemoveCard";
+import api from "../../utils/api";
 
 import CurrentUserContext from "../../contexts/CurrentUserContext";
 
-// ✅ MOCK
-const initialCards = [
-  {
-    _id: "1",
-    name: "Vale de Yosemite",
-    link: "https://practicum-content.s3.us-west-1.amazonaws.com/web-code/moved_yosemite.jpg",
-    isLiked: false,
-  },
-  {
-    _id: "2",
-    name: "Lago Louise",
-    link: "https://practicum-content.s3.us-west-1.amazonaws.com/web-code/moved_lake-louise.jpg",
-    isLiked: false,
-    },
-    {
-    _id: "3",
-      name: "Montanhas Carecas",
-      link: "https://practicum-content.s3.us-west-1.amazonaws.com/web-code/moved_bald-mountains.jpg",
-      isLiked: false,
-    },
-    {
-    _id: "4",
-      name: "Latemar",
-      link: "https://practicum-content.s3.us-west-1.amazonaws.com/web-code/moved_latemar.jpg",
-      isLiked: false,
-    },
-    {
-    _id: "5",
-      name: "Parque Nacional da Vanoise",
-      link: "https://practicum-content.s3.us-west-1.amazonaws.com/web-code/moved_vanoise.jpg",
-      isLiked: false,
-    },
-    {
-    _id: "6",
-      name: "Lago di Braies",
-      link: "https://practicum-content.s3.us-west-1.amazonaws.com/web-code/moved_lago.jpg",
-      isLiked: false,
-    },
-];
-
 function Main() {
   // STATES
-  const [cards, setCards] = useState(initialCards);
+  const [cards, setCards] = useState([]);
   const [popup, setPopup] = useState(null);
   const [selectedCard, setSelectedCard] = useState(null);
   const [cardToDelete, setCardToDelete] = useState(null);
+
+    useEffect(() => {
+        api
+            .getInitialCards()
+            .then((Cards) => {
+                setCards(Cards);
+            })
+
+            .catch((err) => {
+                console.error(err);
+            });
+    }, []);
   
 
   // const [currentUser, setCurrentUser] = useState({
@@ -84,14 +57,15 @@ function Main() {
     setCardToDelete(card);
 }
 
-  function handleCardLike(card) {
-    const updatedCards = cards.map((c) => {
-      if (c._id === card._id) {
-    }
-      return c;
-    });
-
-    setCards(updatedCards);
+  async function handleCardLike(card) {
+    console.log(card);
+    // Verificar mais uma vez se esse cartão já foi curtido
+    const isLiked = card.isLiked;
+    
+    // Enviar uma solicitação para a API e obter os dados do cartão atualizados
+    await api.changeLikeCardStatus(card._id, !isLiked).then((newCard) => {
+        setCards((state) => state.map((currentCard) => currentCard._id === card._id ? newCard : currentCard));
+    }).catch((error) => console.error(error));
   }
 
   function handleUpdateProfile({ name, about }) {
@@ -116,21 +90,19 @@ function Main() {
   }
 
   function handleAddCard({ name, link }) {
-    const newCard = {
-      _id: Date.now().toString(),
-      name,
-      link,
-      isLiked: false,
-    };
-
-    setCards([newCard, ...cards]);
-    handleClosePopup();
+    api
+      .addNewCard({ name, link })
+      .then((newCard) => {
+        setCards((state) => [newCard, ...state]);
+        handleClosePopup();
+      })
+      .catch(console.error);
   }
 
   function handleConfirmDelete() {
-  const updatedCards = cards.filter(
-    (c) => c._id !== cardToDelete._id
-  );
+    const updatedCards = cards.filter(
+      (c) => c._id !== cardToDelete._id
+    );
 
   setCards(updatedCards);
   setCardToDelete(null);
@@ -155,7 +127,10 @@ function Main() {
 
   const addCardPopup = {
     title: "Novo Card",
-    children: <NewCard onSubmit={handleAddCard} />,
+    children: 
+      <NewCard 
+        onSubmit={handleAddCard}
+        onClose={handleClosePopup} />,
   };
 
   return (
@@ -210,6 +185,7 @@ function Main() {
               onCardClick={handleCardClick}
               onCardLike={handleCardLike}
               onCardDelete={handleCardDelete}
+
             />
           ))}
         </ul>

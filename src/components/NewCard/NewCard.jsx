@@ -60,8 +60,6 @@ function NewCard({ onSubmit, onClose }) {
     // limpa depois de salvar
     setName("");
     setLink("");
-
-    onClose();
   }
 
   return (

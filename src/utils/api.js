@@ -8,6 +8,14 @@ class Api {
     return fetch(url, options).then(this._checkResponse);
   }
 
+  _checkResponse(res) {
+  if (res.ok) {
+    return res.json();
+  }
+
+  return Promise.reject(`Erro: ${res.status}`);
+}
+
   getInitialCards() {
     return this._makeRequest(`${this._baseUrl}/cards`, {
       headers: this._headers,
@@ -40,16 +48,6 @@ class Api {
     return isLiked
       ? this.likeCard(cardId)
       : this.unlikeCard(cardId);
-
-    if (isLiked) {
-      return
-        this.unlikeCard(cardId)
-    } 
-    
-    else {
-      return
-        this.likeCard(cardId)
-    }
   }
 
   likeCard(cardId) {
@@ -86,7 +84,6 @@ class Api {
     );
   }
 }
-
 
 const api = new Api({
   baseUrl: "https://around-api.pt-br.tripleten-services.com/v1",
