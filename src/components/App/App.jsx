@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 
 import Header from "../Header/Header";
 import Main from "../Main/Main";
@@ -10,34 +10,51 @@ import api from "../../utils/api";
 
 function App() {
   const [currentUser, setCurrentUser] = useState({
-    name: "Nome",
-    about: "Profissão",
-    avatar: "/images/image_perfil.jpg",
+    // name: "",
+    // about: "",
+    // avatar: "",
   });
-  
-  // function updateUser(data) {
-    // console.log(data)
-    // setCurrentUser(data) 
-  // }
 
   useEffect(() => {
-    api.getUserInfo()
-     .then((user) => {
-        setCurrentUser(user);
-     })
-     .catch((err) => {
-      console.error(err);
-     });
+    (async () => {
+      await api.getUserInfo().then((data) => {
+        setCurrentUser(data);
+      });
+    })();
   }, []);
 
+  const handleUpdateUser = (data) => {
+  return api
+    .setUserInfo(data)
+    .then((newData) => {
+      setCurrentUser(newData);
+      return newData;
+    });
+  };
+
+  const handleUpdateAvatar = (data) => {
+
+  api
+    .updateAvatar(data.avatar)
+    .then((newData) => {
+      setCurrentUser(newData);
+    })
+    .catch(console.error);
+  };
+  
   return (
-    <CurrentUserContext.Provider 
-      value={currentUser}>
-        <div className="page">
-          <Header />
-          <Main />
-          <Footer />
-        </div>
+    <CurrentUserContext.Provider
+      value={{
+        currentUser,
+        handleUpdateUser,
+        handleUpdateAvatar,
+      }}
+    >
+      <div className='page__content'>
+        <Header />
+        <Main />
+        <Footer />
+      </div>
     </CurrentUserContext.Provider>
   );
 }

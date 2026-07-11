@@ -13,10 +13,12 @@ import CurrentUserContext from "../../contexts/CurrentUserContext";
 
 function Main() {
   // STATES
+  const { currentUser } = useContext(CurrentUserContext);
   const [cards, setCards] = useState([]);
   const [popup, setPopup] = useState(null);
   const [selectedCard, setSelectedCard] = useState(null);
   const [cardToDelete, setCardToDelete] = useState(null);
+  
 
     useEffect(() => {
         api
@@ -37,8 +39,6 @@ function Main() {
   //   avatar: "./images/image_perfil.jpg",
   // });
 
-  const currentUser = useContext(CurrentUserContext);
-
   // ===== HANDLERS =====
 
   function handleOpenPopup(popupData) {
@@ -58,36 +58,19 @@ function Main() {
 }
 
   async function handleCardLike(card) {
-    console.log(card);
-    // Verificar mais uma vez se esse cartão já foi curtido
     const isLiked = card.isLiked;
     
-    // Enviar uma solicitação para a API e obter os dados do cartão atualizados
     await api.changeLikeCardStatus(card._id, !isLiked).then((newCard) => {
-        setCards((state) => state.map((currentCard) => currentCard._id === card._id ? newCard : currentCard));
+
+        setCards((state) => state.map((currentCard) => currentCard._id === card._id 
+          ? newCard 
+          : currentCard));
+
     }).catch((error) => console.error(error));
   }
 
-  function handleUpdateProfile({ name, about }) {
-    console.log("Main")
-    console.log(name )
-    console.log(about )
-    updateUser((prev) => ({
-      ...prev,
-      name,
-      about,
-    }));
-    handleClosePopup();
-  }
-
   function handleUpdateAvatar({ avatar }) {
-    console.log("Edit Avatar")
-    updateUser((prev) => ({
-      ...prev,
-      avatar,
-    }));
-    handleClosePopup();
-  }
+    };
 
   function handleAddCard({ name, link }) {
     api
@@ -104,25 +87,28 @@ function Main() {
       (c) => c._id !== cardToDelete._id
     );
 
-  setCards(updatedCards);
-  setCardToDelete(null);
-}
+    setCards(updatedCards);
+    setCardToDelete(null);
+  }
 
   // ===== POPUPS =====
 
-  const editProfilePopup = {
-    title: "Editar Perfil",
+  const editAvatarPopup = {
+    title: "Editar Avatar",
     children: (
-      <EditProfile
-        onSubmit={handleUpdateProfile}
-        currentUser={currentUser}
+      <EditAvatar
+        onClose={handleClosePopup}
       />
     ),
   };
 
-  const editAvatarPopup = {
-    title: "Editar Avatar",
-    children: <EditAvatar onSubmit={handleUpdateAvatar} />,
+  const editProfilePopup = { 
+    title: "Edita Perfil",
+    children: (
+      <EditProfile 
+        onClose={handleClosePopup} 
+      />
+    ),
   };
 
   const addCardPopup = {
@@ -148,7 +134,7 @@ function Main() {
 
           <img
             className="profile__avatar"
-            src={currentUser.avatar}
+            src={currentUser.avatar || null}
             alt="Perfil"
           />
         </div>

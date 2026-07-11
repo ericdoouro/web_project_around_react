@@ -1,43 +1,22 @@
-import { useState, useContext, useEffect } from "react";
+import { useRef, useContext, useEffect } from "react";
 import CurrentUserContext from "../../contexts/CurrentUserContext";
 
-function EditAvatar({ onSubmit, onClose }) {
-  const { currentUser } = useContext(CurrentUserContext);
+function EditAvatar({ onClose }) {
+  const { currentUser, handleUpdateAvatar, } = useContext(CurrentUserContext);
 
-  const [avatar, setAvatar] = useState("");
-  const [error, setError] = useState("");
-  const [isValid, setIsValid] = useState(false);
+  const avatarRef = useRef();
 
-  // 🔥 carrega avatar atual ao abrir
   useEffect(() => {
-    setAvatar(currentUser.avatar);
+    avatarRef.current.value = currentUser.avatar;
   }, [currentUser]);
-
-  // 🔥 validação
-  useEffect(() => {
-    if (!avatar) {
-      setError();
-      setIsValid(false);
-      return;
-    }
-
-    try {
-      new URL(avatar); 
-        setError("");
-        setIsValid(true);
-    
-    } catch {
-        setError("Digite uma URL válida");
-        setIsValid(false);
-    }
-  }, [avatar]);
 
   function handleSubmit(e) {
     e.preventDefault();
 
-    if (!isValid) return;
+    handleUpdateAvatar({
+      avatar: avatarRef.current.value,
+    });
 
-    onSubmit({ avatar });
     onClose();
   }
 
@@ -45,23 +24,15 @@ function EditAvatar({ onSubmit, onClose }) {
     <form className="popup__form" onSubmit={handleSubmit}>
       
       <input
-        className={`popup__input ${
-          error ? "popup__input_type_error" : ""
-        }`}
+        className="popup__input"
         type="url"
         placeholder="Link do avatar"
-        value={avatar}
-        onChange={(e) => setAvatar(e.target.value)}
+        ref={avatarRef}
       />
 
-      {error && <p className="popup__error">{error}</p>}
-
       <button
-        className={`popup__save-button ${
-          !isValid ? "popup__save-button_disabled" : ""
-        }`}
+        className="popup__save-button"
         type="submit"
-        disabled={!isValid}
       >
         Salvar
       </button>

@@ -44,6 +44,10 @@ class Api {
     });
   }
 
+  setUserInfo(data) {
+    return this.editUserInfo(data);
+  }
+
   changeLikeCardStatus(cardId, isLiked) {
     return isLiked
       ? this.likeCard(cardId)
@@ -72,18 +76,19 @@ class Api {
   }
   
   updateAvatar(avatarLink) {
-    return this._makeRequest(
-        `${this._baseUrl}/users/me/avatar`, 
-        {
+
+  return this._makeRequest(
+    `${this._baseUrl}/users/me/avatar`,
+    {
       method: "PATCH",
       headers: this._headers,
       body: JSON.stringify({
-        avatar: avatarLink
+        avatar: avatarLink,
       }),
     }
-    );
-  }
+  );
 }
+};
 
 const api = new Api({
   baseUrl: "https://around-api.pt-br.tripleten-services.com/v1",

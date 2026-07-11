@@ -1,42 +1,77 @@
 import { useState, useContext } from "react";
 import CurrentUserContext from "../../contexts/CurrentUserContext";
 
-function EditProfile({ onSubmit, onClose }) {
-  const { currentUser } = useContext(CurrentUserContext);
+function EditProfile({ onClose }) {
+  const { currentUser, handleUpdateUser } =
+  useContext(CurrentUserContext);
 
-  const [name, setName] = useState("");
-  const [about, setAbout] = useState("");
+  const [name, setName] = useState(currentUser.name); // Adicione variável de estado para nome
+  const [description, setDescription] = useState(currentUser.about);
+  
 
-  function handleSubmit(e) {
+  const handleNameChange = (e) => {
+    setName(e.target.value); 
+  };
+
+  const handleDescriptionChange = (e) => {
+    setDescription(e.target.value); 
+  };
+
+  const handleSubmit = (e) => {
     e.preventDefault();
 
-    onSubmit({
-      name: name || currentUser.name,
-      about: about || currentUser.about,
-    });
+    handleUpdateUser({ 
+      name, 
+      about: description,
+    })
+      .then(() => {
+        onClose();
+    })
+    .catch(console.error);
+  };
 
-    onClose();
-  }
 
-  return (
-    <form className="popup__form" onSubmit={handleSubmit}>
-      <input
-        className="popup__input"
-        type="text"
-        placeholder={currentUser.name}
-        value={name}
-        onChange={(e) => setName(e.target.value)}
-      />
-
-      <input
-        className="popup__input"
-        type="text"
-        placeholder={currentUser.about}
-        value={about}
-        onChange={(e) => setAbout(e.target.value)}
-      />
-
-      <button className="popup__save-button" type="submit">
+ return (
+    <form
+      className='popup__form'
+      name='profile-form'
+      id='edit-profile-form'
+      noValidate
+      onSubmit={handleSubmit}>
+      <label className='popup__label'>
+        <input
+          className='popup__input popup__input_type_name'
+          id='owner-name'
+          maxLength='40'
+          minLength='2'
+          name='userName'
+          placeholder='Name'
+          required
+          type='text'
+          value={name} // Vincular nome ao campo de entrada
+          onChange={handleNameChange} // Adicionar manipulador onChange
+        />
+        <span className='popup__error' id='owner-name-error'></span>
+      </label>
+      <label className='popup__label'>
+        <input
+          className='popup__input popup__input_type_description'
+          id='owner-description'
+          maxLength='200'
+          minLength='2'
+          name='userDescription'
+          placeholder='About me'
+          required
+          type='text'
+          value={description} // Vincular nome ao campo de entrada
+          onChange={handleDescriptionChange} // Adicionar manipulador onChange
+        />
+        <span className='popup__error' id='owner-description-error'></span>
+      </label>
+      <button 
+        className='popup__save-button' 
+        type='submit'
+        >
         Salvar
       </button>
     </form>

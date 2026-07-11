@@ -5,7 +5,6 @@ import CurrentUserContext from "../../contexts/CurrentUserContext";
 
 function Header() {
   const { currentUser } = useContext(CurrentUserContext);
-  console.log("Valor do Hook:", currentUser)
   return (
     <div className="header">
       <img
