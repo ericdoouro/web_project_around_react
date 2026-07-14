@@ -1,10 +1,6 @@
-import { useContext } from "react";
 import CurrentUserContext from "../../contexts/CurrentUserContext";
 
-
-
 function Header() {
-  const { currentUser } = useContext(CurrentUserContext);
   return (
     <div className="header">
       <img

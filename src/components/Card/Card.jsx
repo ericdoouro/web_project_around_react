@@ -1,14 +1,7 @@
-import { useContext } from "react";
 import CurrentUserContext from "../../contexts/CurrentUserContext";
 
 function Card({ card, onCardLike, onCardDelete, onCardClick }) {
   const { name, link, isLiked} = card;
-
-  const { currentUser } = useContext(CurrentUserContext);
-
-  const cardLikeButtonClassName = `card__like-button ${
-  isLiked ? 'card__like-button_is-active' : ''
-  }`;
 
   function handleLikeClick() {
     onCardLike(card);
@@ -16,7 +9,6 @@ function Card({ card, onCardLike, onCardDelete, onCardClick }) {
 
   return (
     <li className="element__item">
-      
 
       {/* DELETE */}
       <button

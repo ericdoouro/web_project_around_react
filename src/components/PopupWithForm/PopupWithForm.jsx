@@ -1,9 +1,7 @@
-import { useContext } from "react";
 import CurrentUserContext from "../../contexts/CurrentUserContext";
 
-const { currentUser } = useContext(CurrentUserContext);
-
 function PopupWithForm({ title, children, onClose, isOpen }) {
+
   return (
     <div className={`popup ${isOpen ? "popup_opened" : ""}`}>
       <div className="popup__container">

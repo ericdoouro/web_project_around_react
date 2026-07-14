@@ -50,16 +50,17 @@ function NewCard({ onSubmit, onClose }) {
     setIsValid(formIsValid);
   }, [name, link]);
 
-  function handleSubmit(e) {
+    async function handleSubmit(e) {
     e.preventDefault();
 
     if (!isValid) return;
 
-    onSubmit({ name, link });
+    await onSubmit({ name, link });
 
-    // limpa depois de salvar
     setName("");
     setLink("");
+
+    onClose();
   }
 
   return (
