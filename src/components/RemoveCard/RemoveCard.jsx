@@ -1,4 +1,4 @@
-import CurrentUserContext from "../../contexts/CurrentUserContext";
+// const [cardToDelete, setCardToDelete] = useState(null);
 
 function RemoveCard({ onSubmit, }) {
 

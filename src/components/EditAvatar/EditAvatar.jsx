@@ -10,14 +10,18 @@ function EditAvatar({ onClose }) {
     avatarRef.current.value = currentUser.avatar;
   }, [currentUser]);
 
-  function handleSubmit(e) {
+  async function handleSubmit(e) {
     e.preventDefault();
 
-    handleUpdateAvatar({
-      avatar: avatarRef.current.value,
-    });
+    try {
+      await handleUpdateAvatar({
+        avatar: avatarRef.current.value,
+      });
 
-    onClose();
+      onClose();
+    } catch (error) {
+      console.error(error);
+    }
   }
 
   return (

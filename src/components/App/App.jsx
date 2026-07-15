@@ -11,13 +11,20 @@ import api from "../../utils/api";
 function App() {
   const [currentUser, setCurrentUser] = useState({});
   const [cards, setCards] = useState([]);
+  const [cardToDelete, setCardToDelete] = useState(null);
+  const [popup, setPopup] = useState(null);
 
   useEffect(() => {
-    (async () => {
-      await api.getUserInfo().then((data) => {
+    async function fetchUser() {
+      try {
+        const data = await api.getUserInfo();
         setCurrentUser(data);
-      });
-    })();
+      } catch (error) {
+        console.error(error);
+      }
+    }
+
+    fetchUser();
   }, []);
 
   const handleUpdateUser = (data) => {
@@ -31,12 +38,12 @@ function App() {
 
   const handleUpdateAvatar = (data) => {
 
-  api
+  return api
     .updateAvatar(data.avatar)
     .then((newData) => {
       setCurrentUser(newData);
+      return newData;
     })
-    .catch(console.error);
   };
 
   useEffect(() => {
@@ -69,24 +76,40 @@ function App() {
     }
   }
 
-    async function handleCardDelete(card) {
-    try {
-      await api.deleteCard(card._id);
-
-      setCards((state) =>
-        state.filter((currentCard) => currentCard._id !== card._id)
-      );
-    } catch (error) {
-      console.error(error);
-    }
-  }
-
     async function handleAddPlaceSubmit({ name, link }) {
       const newCard = await api.addNewCard({ name, link });
 
       setCards((state) => [newCard, ...state]);
 
       return newCard;
+    }
+    
+    function handleCardDelete(card) {
+      setCardToDelete(card);
+    }
+
+    async function handleConfirmDelete() {
+      try {
+        await api.deleteCard(cardToDelete._id);
+
+        setCards((state) =>
+          state.filter(
+            (currentCard) => currentCard._id !== cardToDelete._id
+          )
+        );
+
+        setCardToDelete(null);
+      } catch (error) {
+        console.error(error);
+      }
+    }
+
+    function handleOpenPopup(popupData) {
+      setPopup(popupData);
+    }
+
+    function handleClosePopup() {
+      setPopup(null);
     }
   
   return (
@@ -99,12 +122,17 @@ function App() {
     >
       <div className='page__content'>
         <Header />
-        <Main 
-          cards={cards}
-          onCardLike={handleCardLike}
-          onCardDelete={handleCardDelete}
-          onAddPlaceSubmit={handleAddPlaceSubmit}
-        />
+          <Main
+            cards={cards}
+            onCardLike={handleCardLike}
+            onCardDelete={handleCardDelete}
+            onAddPlaceSubmit={handleAddPlaceSubmit}
+            popup={popup}
+            onOpenPopup={handleOpenPopup}
+            onClosePopup={handleClosePopup}
+            cardToDelete={cardToDelete}
+            onConfirmDelete={handleConfirmDelete}
+          />
         <Footer />
       </div>
     </CurrentUserContext.Provider>

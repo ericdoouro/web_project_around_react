@@ -15,22 +15,18 @@ function Main({
   onCardLike,
   onCardDelete,
   onAddPlaceSubmit,
+  popup,
+  onOpenPopup,
+  onClosePopup,
+  cardToDelete,
+  onConfirmDelete,
 }) {
 
   // STATES
   const { currentUser } = useContext(CurrentUserContext);
-  const [popup, setPopup] = useState(null);
   const [selectedCard, setSelectedCard] = useState(null);
 
   // ===== HANDLERS =====
-
-  function handleOpenPopup(popupData) {
-    setPopup(popupData);
-  }
-
-  function handleClosePopup() {
-    setPopup(null);
-  }
 
   function handleCardClick(card) {
     setSelectedCard(card);
@@ -42,7 +38,7 @@ function Main({
     title: "Editar Avatar",
     children: (
       <EditAvatar
-        onClose={handleClosePopup}
+        onClose={onClosePopup}
       />
     ),
   };
@@ -51,7 +47,7 @@ function Main({
     title: "Edita Perfil",
     children: (
       <EditProfile 
-        onClose={handleClosePopup} 
+        onClose={onClosePopup} 
       />
     ),
   };
@@ -61,7 +57,7 @@ function Main({
     children: (
       <NewCard
         onSubmit={onAddPlaceSubmit}
-        onClose={handleClosePopup}
+        onClose={onClosePopup}
       />
     )
   }
@@ -74,7 +70,7 @@ function Main({
         <div className="profile__avatar-container">
           <button
             className="profile__avatar-edit"
-            onClick={() => handleOpenPopup(editAvatarPopup)}
+            onClick={() => onOpenPopup(editAvatarPopup)}
           >
             <img src="/images/edit.png" alt="Edit" />
           </button>
@@ -91,7 +87,7 @@ function Main({
             <h2 className="profile__info-name">{currentUser.name}</h2>
             <button
               className="popup__edit-profile-button"
-              onClick={() => handleOpenPopup(editProfilePopup)}
+              onClick={() => onOpenPopup(editProfilePopup)}
             >
               <img src="/images/edit.png" alt="Edit" />
             </button>
@@ -102,7 +98,7 @@ function Main({
 
         <button
           className="profile__add"
-          onClick={() => handleOpenPopup(addCardPopup)}
+          onClick={() => onOpenPopup(addCardPopup)}
         >
           <img src="/images/add.png" alt="Add" />
         </button>
@@ -127,7 +123,7 @@ function Main({
       {popup && (
         <Popup 
           title={popup.title} 
-          onClose={handleClosePopup}>
+          onClose={onClosePopup}>
           {popup.children}
         </Popup>
       )}
@@ -140,6 +136,21 @@ function Main({
         />
       )}
 
+      {cardToDelete && (
+    <Popup
+      title="Tem certeza?"
+      onClose={() => 
+        onCardDelete(null)}
+    >
+    
+    <RemoveCard
+        onSubmit={(e) => {
+          e.preventDefault();
+          onConfirmDelete();
+        }}
+      />
+    </Popup>
+  )}
     </main>
   );
 }
