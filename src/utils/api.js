@@ -44,10 +44,6 @@ class Api {
     });
   }
 
-  setUserInfo(data) {
-    return this.editUserInfo(data);
-  }
-
   changeLikeCardStatus(cardId, isLiked) {
     return isLiked
       ? this.likeCard(cardId)

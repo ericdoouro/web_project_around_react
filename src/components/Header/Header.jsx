@@ -1,5 +1,3 @@
-import CurrentUserContext from "../../contexts/CurrentUserContext";
-
 function Header() {
   return (
     <div className="header">

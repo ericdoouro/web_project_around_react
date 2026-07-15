@@ -1,66 +1,136 @@
-# Tripleten — Web Project Around (React)
+# TripleTen — Web Project Around (React)
 
-Este projeto consiste em um perfil de usuário com layout responsivo, agora reestruturado utilizando React, mantendo os conceitos originais de HTML, CSS e JavaScript, porém aplicados em uma arquitetura moderna baseada em componentes.
+Este projeto consiste em uma aplicação de perfil de usuário desenvolvida com React, baseada no projeto Around da TripleTen. A aplicação foi evoluindo ao longo das sprints, migrando de HTML, CSS e JavaScript puros para uma arquitetura baseada em componentes reutilizáveis, gerenciamento de estado e integração com API REST.
 
-A interface continua adaptando-se automaticamente a diferentes tamanhos de tela (como celulares e tablets) por meio de Media Queries, garantindo uma experiência consistente em qualquer dispositivo.
+A interface é totalmente responsiva e adapta-se automaticamente a diferentes tamanhos de tela por meio de Media Queries, proporcionando uma boa experiência tanto em computadores quanto em dispositivos móveis.
 
-Na Sprint 12, o projeto passou a funcionar integrado a APIs, permitindo maior interatividade. Já na Sprint 13, houve a conversão da aplicação para React, substituindo a manipulação direta do DOM por uma abordagem declarativa baseada em estados e componentes reutilizáveis.
+Na Sprint 12 foi realizada a integração com a API da TripleTen. Na Sprint 13 ocorreu a migração completa para React. Já na Sprint 14 foram implementados gerenciamento global de estado com Context API, operações completas de CRUD utilizando a API, validações de formulários e organização da aplicação seguindo uma arquitetura baseada em componentes.
 
-A página simula um perfil de usuário com funcionalidades completas, incluindo edição de dados, adição de cards com imagens, curtidas e visualização em tela cheia. A navegação permanece fluida e interativa, agora gerenciada por estados do React, com popups dinâmicos controlados por hooks como useState.
+---
 
-Para melhorar a acessibilidade e experiência do usuário, foram implementadas validações de formulário diretamente no React, com mensagens de erro claras, controle de campos interagidos (touched), limites de caracteres e feedbacks visuais em tempo real.
+# Funcionalidades
 
-# Funcionalidades Implementadas
+- Visualização das informações do usuário carregadas pela API
+- Edição de perfil
+- Atualização do avatar
+- Carregamento dos cartões pela API
+- Criação de novos cartões
+- Curtir e remover curtidas dos cartões
+- Exclusão de cartões com confirmação
+- Visualização de imagens em tela cheia
+- Gerenciamento centralizado de popups
+- Validação de formulários em tempo real
+- Atualização automática da interface após operações na API
 
-- Edição de Perfil — Alteração de nome e ocupação utilizando estado global.
-- Edição de Avatar — Atualização dinâmica da imagem de perfil.
-- Criação de Cards — Adição de novos cards com título e imagem.
-- Curtidas — Sistema de likes com atualização de estado.
-- Exclusão de Cards — Remoção com confirmação via popup.
-- Visualização de Imagem — Ampliação em popup.
-- Gerenciamento de Popups — Controle centralizado via estado.
-- Validação de Formulários — Feedback em tempo real com controle de erros.
-- Fechamento de Popups — Botão de fechar implementado via props.
+---
 
 # Tecnologias Utilizadas
 
-- HTML5 → convertido para JSX
-- CSS3 (com Media Queries)
+- HTML5
+- CSS3
 - JavaScript (ES6+)
-- React (Hooks: useState, useEffect, useContext)
-- Context API (gerenciamento de estado global)
-- APIs integradas (Sprint anterior)
-- Dados simulados (Mock Data) nesta etapa
+- React
+- Hooks
+  - useState
+  - useEffect
+  - useContext
+  - useRef
+- Context API
+- Fetch API
+- Vite
+- ESLint
 
-# Detalhes do Projeto
+---
 
-Estrutura baseada em componentes reutilizáveis (Header, Main, Footer, Card, Popup, etc.)
-Gerenciamento de estado centralizado para usuário e interface
-Uso de Context API para compartilhar dados do usuário entre componentes
-Substituição da manipulação direta do DOM por renderização declarativa
-Componentização dos popups com reutilização de layout
-Validação de formulários implementada diretamente no React
+# Arquitetura
 
-# Popups funcionais para:
+O projeto utiliza uma arquitetura baseada em componentes reutilizáveis.
 
-- Edição de perfil;
-- Edição de avatar;
-- Criação de cards;
-- Confirmação de exclusão;
-- Visualização de imagens em tela cheia.
+Principais componentes:
+
+- App
+- Header
+- Main
+- Footer
+- Card
+- Popup
+- ImagePopup
+- EditProfile
+- EditAvatar
+- NewCard
+- RemoveCard
+
+Os estados principais da aplicação são centralizados no componente `App`, enquanto o `CurrentUserContext` é responsável por compartilhar os dados do usuário entre os componentes.
+
+As operações assíncronas são realizadas através da API da TripleTen utilizando Promises e async/await.
+
+---
+
+# Popups disponíveis
+
+- Editar perfil
+- Editar avatar
+- Novo cartão
+- Confirmação de exclusão
+- Visualização de imagem
+
+---
 
 # Responsividade
 
-O layout continua adaptando-se automaticamente à largura da tela, especialmente em dispositivos abaixo de 800px.
+O layout adapta-se automaticamente para diferentes resoluções de tela.
 
-Nestes casos:
+Entre as adaptações implementadas estão:
 
-Os elementos reorganizam-se em colunas verticais;
-O conteúdo é centralizado;
-A navegação e a leitura permanecem confortáveis em smartphones e tablets.
+- reorganização dos elementos em telas menores;
+- centralização do conteúdo;
+- adaptação da navegação para smartphones e tablets;
+- manutenção da usabilidade em diferentes dispositivos.
 
-## Como usar
+---
 
-1. Clone o repositório:
-   bash
-   git clone https://github.com/ericdoouro/web_project_around_react.git
+# Como executar o projeto
+
+Clone o repositório:
+
+```bash
+git clone https://github.com/ericdoouro/web_project_around_react.git
+```
+
+Entre na pasta do projeto:
+
+```bash
+cd web_project_around_react
+```
+
+Instale as dependências:
+
+```bash
+npm install
+```
+
+Execute o servidor de desenvolvimento:
+
+```bash
+npm run dev
+```
+
+Para verificar o código:
+
+```bash
+npm run lint
+```
+
+Para gerar a versão de produção:
+
+```bash
+npm run build
+```
+
+---
+
+# Status do Projeto
+
+✅ Projeto desenvolvido durante o Bootcamp de Desenvolvimento Web da TripleTen.
+
+Ao final da Sprint 14, a aplicação possui integração completa com a API, gerenciamento de estado utilizando React Hooks e Context API, componentes reutilizáveis, validação de formulários e interface totalmente responsiva.

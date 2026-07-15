@@ -1,5 +1,3 @@
-import CurrentUserContext from "../../contexts/CurrentUserContext";
-
 function PopupWithForm({ title, children, onClose, isOpen }) {
 
   return (

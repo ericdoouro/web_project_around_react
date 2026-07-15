@@ -1,5 +1,3 @@
-// const [cardToDelete, setCardToDelete] = useState(null);
-
 function RemoveCard({ onSubmit, }) {
 
   return (
