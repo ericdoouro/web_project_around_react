@@ -1,5 +1,12 @@
 # TripleTen — Web Project Around (React)
 
+Demonstração
+
+A aplicação está publicada na Vercel e pode ser acessada pelo link:
+
+Acessar o Around React:
+https://web-project-around-react-topaz.vercel.app/
+
 Aplicação web desenvolvida com React.js, com gerenciamento de perfis, criação, exclusão e curtidas em cards, utilizando componentes e APIs REST.
 
 Este projeto consiste em uma aplicação de perfil de usuário desenvolvida com React, baseada no projeto Around da TripleTen. A aplicação foi evoluindo ao longo das sprints, migrando de HTML, CSS e JavaScript puros para uma arquitetura baseada em componentes reutilizáveis, gerenciamento de estado e integração com API REST.
