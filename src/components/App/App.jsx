@@ -29,7 +29,7 @@ function App() {
 
   const handleUpdateUser = (data) => {
   return api
-    .setUserInfo(data)
+    .editUserInfo(data)
     .then((newData) => {
       setCurrentUser(newData);
       return newData;
