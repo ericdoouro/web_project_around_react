@@ -1,5 +1,7 @@
 # TripleTen — Web Project Around (React)
 
+Aplicação web desenvolvida com React.js, com gerenciamento de perfis, criação, exclusão e curtidas em cards, utilizando componentes e APIs REST.
+
 Este projeto consiste em uma aplicação de perfil de usuário desenvolvida com React, baseada no projeto Around da TripleTen. A aplicação foi evoluindo ao longo das sprints, migrando de HTML, CSS e JavaScript puros para uma arquitetura baseada em componentes reutilizáveis, gerenciamento de estado e integração com API REST.
 
 A interface é totalmente responsiva e adapta-se automaticamente a diferentes tamanhos de tela por meio de Media Queries, proporcionando uma boa experiência tanto em computadores quanto em dispositivos móveis.
